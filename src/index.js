@@ -1,11 +1,14 @@
 export {
   createStore,
   getState,
-  addActions,
-  dispatch,
   update,
   next,
   createProvider,
   useStore,
   addSubstore,
-} from './dashStore';
+} from './store';
+
+export {
+  addActions,
+  dispatch,
+} from './dispatcher';
