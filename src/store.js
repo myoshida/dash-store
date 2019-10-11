@@ -4,58 +4,48 @@
  */
 
 import { createContext, createElement, useContext, useState } from 'react';
-import { addActions, dispatch } from './dispatcher';
 
-export const createStore = (initialState, opts = {}) => {
-  const noop = () => null;
-  const {
-    key = 'main', actionKey = 'type', onDispatch = noop, onUpdate = noop,
-  } = opts;
-  const store = {
-    key,
-    context: createContext(initialState),
-    setState: noop,
-    aggregate: noop,
-    state: initialState,
-    queue: [],
-    engaged: false,
-    actions: new Map(),
-    actionKey,
-    onDispatch,
-    onUpdate,
-  };
-  store.getState = () => store.state;
-  store.addActions = addActions.bind(null, store);
-  store.dispatch = dispatch.bind(null, store);
-  store.update = update.bind(null, store);
-  return store;
-};
+export const createStore = initialState => ({
+  state: initialState,
+  queue: [],
+  busy: false,
+  context: createContext(/* undefined */),
+  setState: null,
+  onChange: store => { if (store.setState) store.setState(store.state); },
+});
 
 export const getState = store => store.state;
 
+export const addOnChangeHook = (store, fn) => {
+  const { onChange } = store;
+  store.onChange = (store, prevState, nextState) => (
+    onChange(store, prevState, nextState),
+    fn(store, prevState, nextState)
+  );
+};
+
 export const update = (store, fn) => {
-  const {
-    key, setState, aggregate, state: prevState, queue, engaged, onUpdate,
-  } = store;
-  const loop = state => {
+  const { state: prevState, queue, onChange } = store;
+  const loop = nextState => {
     if (queue.length === 0) {
-      if (prevState !== state) {
-        onUpdate(key, prevState, state);
-        setState(store.state = state);
-        aggregate(state);
+      if (prevState !== nextState) {
+        store.state = nextState;
+        onChange(store, prevState, nextState);
       }
-      store.engaged = false;
-      return state;
+      store.busy = false;
+      return nextState;
     }
-    const fn = queue.shift();
-    return queue.length === 0 ?
-      Promise.resolve(loop(fn(state))) /* shortcut */ :
-      Promise.resolve(fn(state)).then(state => loop(state));
+    const nextFn = queue.shift();
+    if (queue.length === 0) {
+      return Promise.resolve(loop(nextFn(nextState)));  // shortcut
+    }
+    return Promise.resolve(nextFn(nextState)).then(state => loop(state));
   };
+
   queue.push(fn);
-  if (!engaged) {
-    store.engaged = true;
-    store.promise = loop(prevState);
+  if (!store.busy) {
+    store.busy = true;
+    store.promise = loop(store.state);
   }
   return store.promise;
 };
@@ -67,8 +57,3 @@ export const createProvider = store => ({ children = null }) => {
 };
 
 export const useStore = store => useContext(store.context);
-
-export const addSubstore = (store, substore, aggregate = null) => {
-  substore.aggregate = aggregate ? aggregate : substate =>
-    update(store, state => ({ ...state, [substore.key]: substate }));
-};

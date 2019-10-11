@@ -1,14 +1,21 @@
 export {
   createStore,
   getState,
-  update,
-  next,
+  addOnChangeHook,
   createProvider,
   useStore,
-  addSubstore,
 } from './store';
 
 export {
+  addSubstore,
+} from './addSubStore';
+
+export {
   addActions,
+  addActionList,
   dispatch,
 } from './dispatcher';
+
+export {
+  nextState,
+} from './aux';
