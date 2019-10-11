@@ -2,6 +2,7 @@ export {
   createStore,
   getState,
   addOnChangeHook,
+  update,
   createProvider,
   useStore,
 } from './store';
