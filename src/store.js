@@ -8,6 +8,7 @@ import { createContext, createElement, useContext, useState } from 'react';
 export const createStore = initialState => ({
   state: initialState,
   queue: [],
+  timer: null,
   busy: false,
   context: createContext(/* undefined */),
   setState: null,
@@ -25,14 +26,15 @@ export const addOnChangeHook = (store, fn) => {
 };
 
 export const update = (store, fn) => {
-  const { state: prevState, queue, onChange } = store;
+  const { state: prevState, queue, onChange = null } = store;
   const loop = nextState => {
     if (queue.length === 0) {
       if (prevState !== nextState) {
         store.state = nextState;
-        onChange(store, prevState, nextState);
+        if (onChange) onChange(store, prevState, nextState);
       }
       store.busy = false;
+      store.timer = null;
       return nextState;
     }
     const nextFn = queue.shift();
@@ -42,10 +44,18 @@ export const update = (store, fn) => {
     return Promise.resolve(nextFn(nextState)).then(state => loop(state));
   };
 
+  if (store.busy) {
+    // XXX console.warn('dash-store: nested update()');
+    store.then = store.then.then(() => update(store, fn));
+  }
   queue.push(fn);
-  if (!store.busy) {
-    store.busy = true;
-    store.promise = loop(store.state);
+  if (!store.timer) {
+    store.promise = store.then = new Promise((resolve, reject) => {
+      store.timer = setTimeout(() => {
+        store.busy = true;
+        return resolve(loop(store.state));
+      }, 0);
+    });
   }
   return store.promise;
 };
