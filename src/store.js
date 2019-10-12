@@ -7,58 +7,37 @@ import { createContext, createElement, useContext, useState } from 'react';
 
 export const createStore = initialState => ({
   state: initialState,
-  queue: [],
-  timer: null,
   busy: false,
   context: createContext(/* undefined */),
   setState: null,
-  onChange: store => { if (store.setState) store.setState(store.state); },
+  onChange: (store, _prev, _next) => {
+    if (store.setState) store.setState(store.state);
+  },
 });
-
-export const getState = store => store.state;
 
 export const addOnChangeHook = (store, fn) => {
   const { onChange } = store;
-  store.onChange = (store, prevState, nextState) => (
-    onChange(store, prevState, nextState),
-    fn(store, prevState, nextState)
-  );
+  store.onChange = (store, prev, next) => {
+    onChange(store, prev, next);
+    fn(store, prev, next);
+  };
 };
+
+export const getState = store => store.state;
 
 export const update = (store, fn) => {
-  const { state: prevState, queue, onChange = null } = store;
-  const loop = nextState => {
-    if (queue.length === 0) {
-      if (prevState !== nextState) {
-        store.state = nextState;
-        if (onChange) onChange(store, prevState, nextState);
-      }
-      store.busy = false;
-      store.timer = null;
-      return nextState;
-    }
-    const nextFn = queue.shift();
-    if (queue.length === 0) {
-      return Promise.resolve(loop(nextFn(nextState)));  // shortcut
-    }
-    return Promise.resolve(nextFn(nextState)).then(state => loop(state));
-  };
-
   if (store.busy) {
-    // XXX console.warn('dash-store: nested update()');
-    store.then = store.then.then(() => update(store, fn));
+    throw new Error('dash-store: error: nested update() call -- ignored');
   }
-  queue.push(fn);
-  if (!store.timer) {
-    store.promise = store.then = new Promise((resolve, reject) => {
-      store.timer = setTimeout(() => {
-        store.busy = true;
-        return resolve(loop(store.state));
-      }, 0);
-    });
-  }
-  return store.promise;
+  const { state, onChange } = store;
+  store.busy = true;
+  const next = store.state = fn(state);
+  store.busy = false;
+  onChange(store, state, next);
+  return next;
 };
+
+export const update_ = (store, fn) => Promise.resolve(update(store, fn));
 
 export const createProvider = store => ({ children = null }) => {
   const [value, setState] = useState(store.state);

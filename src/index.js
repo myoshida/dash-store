@@ -3,6 +3,7 @@ export {
   getState,
   addOnChangeHook,
   update,
+  update_,
   createProvider,
   useStore,
 } from './store';

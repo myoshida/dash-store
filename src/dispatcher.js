@@ -7,25 +7,26 @@ const useActions = store => {
   if (!store.actions) {
     store.actions = new Map();
   }
+  return store.actions;
 };
 
 export const setOnDispatchHook = (store, fn) => {
   store.onDispatch = fn;
 };
 
-export const addActions = (store, actions) => {
-  useActions(store);
-  Object.keys(actions).forEach(k => store.actions.set(k, actions[k]));
+export const addActions = (store, addition) => {
+  const actions = useActions(store);
+  Object.keys(addition).forEach(k => store.actions.set(k, actions[k]));
 };
 
 export const addActionList = (store, actionList) => {
-  useActions(store);
+  const actions = useActions(store);
   actionList.forEach(([k, v]) => store.actions.set(k, v));
 };
 
 export const dispatch = (store, ...args) => {
-  useActions(store);
-  const { state, actions, actionKey, onDispatch = null } = store;
+  const actions = useActions(store);
+  const { state, actionKey, onDispatch = null } = store;
   if (onDispatch) { onDispatch(state, args); };
   let fn = null;
   switch (typeof args[0]) {
