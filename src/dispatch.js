@@ -1,4 +1,4 @@
-/** @license dash-store (dispatcher)
+/** @license dash-store/dispatch
  * Copyright (c) 2019 Masakazu Yoshida.
  * This source code is licensed under The MIT License (MIT).
  */

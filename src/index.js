@@ -14,4 +14,4 @@ export {
   addActions,
   addActionList,
   dispatch,
-} from './dispatcher';
+} from './dispatch';

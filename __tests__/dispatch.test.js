@@ -1,7 +1,7 @@
 import { createStore, getState, update_, nextState as next } from '../src';
 import {
   setActionKey, setOnDispatchHook, addActions, addActionList, dispatch,
-} from '../src/dispatcher';
+} from '../src/dispatch';
 
 const store = createStore({ a: 1 });
 store.getState = getState.bind(null, store);
