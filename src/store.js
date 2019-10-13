@@ -5,7 +5,7 @@
 
 import { createContext, createElement, useContext, useState } from 'react';
 
-export const createStore = initialState => ({
+export const createStore = (initialState = {}) => ({
   state: initialState,
   busy: false,
   context: createContext(/* undefined */),
@@ -27,7 +27,7 @@ export const getState = store => store.state;
 
 export const update = (store, fn) => {
   if (store.busy) {
-    throw new Error('dash-store: error: nested update() call -- ignored');
+    throw new Error('dash-store: error: nested update() call');
   }
   const { state, onChange } = store;
   store.busy = true;
@@ -37,6 +37,9 @@ export const update = (store, fn) => {
   return next;
 };
 
+/** (INTERNAL USE ONLY) Another version of update() which returns a
+    Promise which resolves to the latest state of the store.
+ */
 export const update_ = (store, fn) => Promise.resolve(update(store, fn));
 
 export const createProvider = store => ({ children = null }) => {
@@ -46,3 +49,37 @@ export const createProvider = store => ({ children = null }) => {
 };
 
 export const useStore = store => useContext(store.context);
+
+/** Creates a sub-store aggregator (an updater function) which is
+    compatible with onChange handler interface.  The state of the
+    sub-store will appear as [key] prop in the parent's state.  Please
+    note that this function assumes the parent's state is represented
+    as a JavaScript Object.
+
+    Example:
+
+    const store = createStore(...);
+    const substore = createStore(...);
+    addOnChangeHandler(
+      subst,
+      createSubstoreAggregator(store, substore, 'subst')
+    );
+ */
+export const createSubstoreAggregator = (store, substore, key) => {
+  update(store, state => ({ ...state, [key]: substore.getState() }));
+  return (_store, _prev, next) =>
+    update(store, state => ({ ...state, [key]: next }));
+};
+
+/** (INTERNAL USE ONLY) Returns the updated (next) state object.  This
+    function functionally updates <state> with the prop(s) designated
+    in <diff>.
+
+    Example:
+
+    const state = { a: 1, b: 2, c: 3 };
+    const next = nextState(state, { c: 0, d: 4 });
+    state;  // -> { a: 1, b: 2, c: 3 }
+    next;   // -> { a: 1, b: 2, c: 0, d: 4 }
+ */
+export const nextState = (state, diff) => ({ ...state, ...diff });
