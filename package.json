@@ -5,7 +5,7 @@
   "scripts": {
     "build": "babel src -d lib",
     "prepare": "npm run build",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest --silent"
   },
   "author": "Masakazu Yoshida",
   "license": "MIT",
