@@ -13,93 +13,67 @@ store.setActionKey = setActionKey.bind(null, store);
 
 test('dispatch -> update: no-op', () => {
   const s = store.getState();
-  expect(store.update(state => state)).resolves.toBe(s);
+  store.update(state => state);
+  expect(store.getState()).toBe(s);
 });
 
 test('dispatch -> update: addActions', () => {
   store.addActions({
-    reset: () => store.update(s => ({ ...s, a: 0 })),
+    reset: () => store.update(s => ({ a: 0 })),
     add: (opr1) => store.update(s => ({ ...s, a: s.a + opr1 })),
     addMul: (opr1, opr2) =>
       store.update(s => ({ ...s, a: (s.a + opr1) * opr2 })),
   });
-  expect(store.dispatch('reset')).resolves.toEqual({ a: 0 });
-  expect(store.dispatch('add', 1)).resolves.toEqual({ a: 1 });
-  expect(store.dispatch('add', 2)).resolves.toEqual({ a: 3 });
-  expect(store.dispatch('addMul', 1, 2)).resolves.toEqual({ a: 8 });
+  store.dispatch('reset');
+  expect(store.getState()).toEqual({ a: 0 });
+  store.dispatch('add', 1);
+  expect(store.getState()).toEqual({ a: 1 });
+  store.dispatch('add', 2);
+  expect(store.getState()).toEqual({ a: 3 });
+  store.dispatch('addMul', 1, 2);
+  expect(store.getState()).toEqual({ a: 8 });
 });
 
 test('dispatch -> update: addActionList', () => {
   store.addActionList([]);
   store.addActionList([
-    ['reset2', () => store.update(s => ({ ...s, a: 0 }))],
+    ['reset2', () => store.update(s => ({ a: 0 }))]
   ]);
   store.addActionList([
     ['add2', opr1 => store.update(s => ({ ...s, a: s.a + opr1 }))],
     ['addMul2', (opr1, opr2) =>
      store.update(s => ({ ...s, a: (s.a + opr1) * opr2 }))],
   ]);
-  expect(store.dispatch('reset2')).resolves.toEqual({ a: 0 });
-  expect(store.dispatch('add2', 1)).resolves.toEqual({ a: 1 });
-  expect(store.dispatch('add2', 2)).resolves.toEqual({ a: 3 });
-  expect(store.dispatch('addMul2', 1, 2)).resolves.toEqual({ a: 8 });
+  store.dispatch('reset2');
+  expect(store.getState()).toEqual({ a: 0 });
+  store.dispatch('add2', 1);
+  expect(store.getState()).toEqual({ a: 1 });
+  store.dispatch('add2', 2);
+  expect(store.getState()).toEqual({ a: 3 });
+  store.dispatch('addMul2', 1, 2);
+  expect(store.getState()).toEqual({ a: 8 });
 });
 
 test('dispatch -> update: dispatch({ ... })', () => {
   store.addActionList([]);
   store.addActionList([
-    ['reset3', () => store.update(s => ({ ...s, a: 0 }))],
+    ['reset3', () => store.update(s => ({ a: 0 }))],
   ]);
   store.addActionList([
     ['add3', ({ opr1 }) => store.update(s => ({ ...s, a: s.a + opr1 }))],
     ['addMul3', ({ opr1, opr2 }) =>
      store.update(s => ({ ...s, a: (s.a + opr1) * opr2 }))],
   ]);
-  expect(store.dispatch({ type: 'reset3' }))
-    .resolves.toEqual({ a: 0 });
-  expect(store.dispatch({ type: 'add3', opr1: 1 }))
-    .resolves.toEqual({ a: 1 });
-  expect(store.dispatch({ type: 'add3', opr1: 2 }))
-    .resolves.toEqual({ a: 3 });
-  expect(store.dispatch({ type: 'addMul3', opr1: 1, opr2: 2 }))
-    .resolves.toEqual({ a: 8 });
-});
-
-test('dispatch -> update: dispatch({ ... }) /w setActionKey()', () => {
-  store.setActionKey('tag');
-  expect(store.dispatch({ tag: 'reset3' }))
-    .resolves.toEqual({ a: 0 });
-  expect(store.dispatch({ tag: 'add3', opr1: 1 }))
-    .resolves.toEqual({ a: 1 });
-  expect(store.dispatch({ tag: 'add3', opr1: 2 }))
-    .resolves.toEqual({ a: 3 });
-  expect(store.dispatch({ tag: 'addMul3', opr1: 1, opr2: 2 }))
-    .resolves.toEqual({ a: 8 });
+  store.dispatch({ type: 'reset3' });
+  expect(store.getState()).toEqual({ a: 0 });
+  store.dispatch({ type: 'add3', opr1: 1 });
+  expect(store.getState()).toEqual({ a: 1 });
+  store.dispatch({ type: 'add3', opr1: 2 });
+  expect(store.getState()).toEqual({ a: 3 });
+  dispatch({ type: 'addMul3', opr1: 1, opr2: 2 });
 });
 
 test('dispatch: not found -> undefined', () => {
-  store.setActionKey('type');
   expect(store.dispatch('not found')).toEqual(undefined);
   expect(store.dispatch({ type: 'not found' })).toEqual(undefined);
-});
-
-test('dispatch -> update: addActionList', () => {
-  store.addActionList([
-    ['testOnDispatch', () => store.update(s => ({ ...s, dispatch: 1 }))],
-  ]);
-  let __args = [];
-  // set a handler
-  store.dispatch('reset');
-  setOnDispatchHook(store, (...args) => { __args = args; });
-  expect(store.dispatch('testOnDispatch', 1, 2, 3))
-    .resolves.toEqual({ a: 0, dispatch: 1 });
-  expect(__args[0].state).toEqual({ a: 0, dispatch: 1 }); // must be the store
-  expect(__args[1]).toEqual(['testOnDispatch', 1, 2, 3]);
-  // set null
-  store.dispatch('reset');
-  setOnDispatchHook(store, null);
-  __args = [];
-  expect(store.dispatch('testOnDispatch', 1, 2, 3))
-    .resolves.toEqual({ a: 0, dispatch: 1 });
-  expect(__args).toEqual([]);
 });
