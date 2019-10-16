@@ -35,11 +35,13 @@ conventions.
 In the form (1), actions to dispatch are represented a JavaScript
 Object.  The action type will be determined by a property named such
 as ``type``, and the function of the action will be called by the
-following convention::
+following convention:
 
-  dispatch(store, { type: 'actionTag', ... });  // form (1)
-  // ↓
-  fn({ type: 'actionTag', ... });
+::
+
+   dispatch(store, { type: 'actionTag', ... });  // form (1)
+   // ↓
+   fn({ type: 'actionTag', ... });
 
 .. note::
 
@@ -49,23 +51,30 @@ following convention::
 In the form (2), actions are represented similar to the oridinal
 function call.  The action type will be determined by the second
 argument ``actionTag``.  the function of the action will be called by
-the following convention::
+the following convention:
 
-  dispatch(store, 'actionTag', args...);  // form (2)
-  // ↓
-  fn(args...);
+::
+
+   dispatch(store, 'actionTag', args...);  // form (2)
+   // ↓
+   fn(args...);
 
 The form (3) is simliar to the form (2).  The difference to the
 form (2) is that ``actionTag`` and following arguments are
-surounded by ``[]``::
+surounded by ``[]``:
 
-  dispatch(store, ['actionTag', args...]);  // form (3)
-  // ↓
-  fn(args...);
+::
 
-Example::
+   dispatch(store, ['actionTag', args...]);  // form (3)
+   // ↓
+   fn(args...);
 
-   export const store = createStore({ counter: 0 });
+Example:
+
+::
+
+   const store = createStore({ counter: 0 });
+   const update = update.bind(null, store);
    addActions(store, {
      set: ({ value = 0 }) => update(state, { ...state, counter: value },
      increment: i => update(state, { ...state, counter: state.counter + i }),
@@ -79,13 +88,16 @@ Example::
 .. hint::
 
    You can create a specialized version of dispatch for your store by
-   bind() method::
+   bind() method:
 
-     const store = createStore({ cnt: 0 });
-     addActions(store, { inc: () => update(s => { ...s, cnt: s.cnt + 1), ... });
-     export const dispatch2 = dispatch.bind(null, store);  // ← create a new dispatch function
-     ...
-     dispatch2('inc');
+   ::
+
+      const store = createStore({ cnt: 0 });
+      const update = update.bind(null, store);
+      addActions(store, { inc: () => update(s => { ...s, cnt: s.cnt + 1), ... });
+      dispatch2 = dispatch.bind(null, store);  // ← create a new dispatch function
+      ...
+      dispatch2('inc');
 
 
 addActions
@@ -98,17 +110,22 @@ addActions
    addActions(store, addition);
 
 This function adds actions to the store.  The actions to add are
-represented as a JavaScript Object in the following form::
+represented as a JavaScript Object in the following form:
 
-  {
-    actionTag1: function1,
-    actionTag2: function2,
-    ...
-  }
+::
 
-Example::
+   {
+     actionTag1: function1,
+     actionTag2: function2,
+     ...
+   }
 
-   export const store = createStore({ counter: 0 });
+Example:
+
+::
+
+   const store = createStore({ counter: 0 });
+   const update = update.bind(null, store);
    addActions(store, {
      reset: () => update(state, { ...state, counter: 0 },
      increment: i => update(state, { ...state, counter: state.counter + i }),
@@ -126,17 +143,22 @@ addActionList
    addActionList(store, addition);
 
 This function adds actions to the store.  The actions to add are
-represented as an array of arrays in the following form::
+represented as an array of arrays in the following form:
 
-  [
-    ['actionTag1', function1],
-    ['actionTag2', function2],
-    ...
-  ]
+::
 
-Example::
+   [
+     ['actionTag1', function1],
+     ['actionTag2', function2],
+     ...
+   ]
+
+Example:
+
+::
 
    export const store = createStore({ counter: 0 });
+   const update = update.bind(null, store);
    addActionList(store, [
      ['reset', () => update(state, { ...state, counter: 0 }],
      ['increment', i => update(state, { ...state, counter: state.counter + i })],
@@ -162,10 +184,12 @@ a JavaScript Object supplied to :ref:`dispatch` function.
 
    The default action key is ``'type'``.
 
-Example::
+Example:
 
-  const store = createStore({ ... });
-  setActionKey(store, 'tag');  // → { tag: 'action', ... }
+::
+
+   const store = createStore({ ... });
+   setActionKey(store, 'tag');  // → { tag: 'action', ... }
 
 
 setOnDispatchHook
@@ -187,11 +211,13 @@ The hook functiion ``fn`` should have the following signatre::
 Where the ``args`` is an array which holds the entire argument list
 passed to dispatch except the first one (store).
 
-Example::
+Example:
 
-  const store = createStore(...);
-  setOnDispatchHook(store, fn);
-  ...
-  dispatch(store, arg1, arg2, arg3, ...);
-  // ↓
-  // fn(store, [arg1, arg2, arg3, ...]);
+::
+
+   const store = createStore(...);
+   setOnDispatchHook(store, fn);
+   ...
+   dispatch(store, arg1, arg2, arg3, ...);
+   // ↓
+   // fn(store, [arg1, arg2, arg3, ...]);
