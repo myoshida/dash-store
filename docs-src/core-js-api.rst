@@ -2,7 +2,7 @@
 Core JavaScript API
 ===================
 
-.. highlight:: javascript
+.. highlight:: jsx
 
 In this section we describe the core JavaScript API of
 dash-store.

@@ -12,7 +12,8 @@ The documentation of dash-store
 
    overview.rst
    getting_started.rst
-   api.rst
+   core-js-api.rst
+   dispatch-api.rst
 
 Indices and tables
 ==================

@@ -25,7 +25,7 @@ Quick start example
 
 The following is an example to quickly grasp how to use dash-store:
 
-.. highlight:: javascript
+.. highlight:: jsx
 
 ::
 
