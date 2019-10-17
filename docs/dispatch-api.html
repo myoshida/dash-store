@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Supplemental dispatcher API &mdash; dash-store  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Core JavaScript API" href="core-js-api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> dash-store
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core-js-api.html">Core JavaScript API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Supplemental dispatcher API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dispatch">dispatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#addactions">addActions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#addactionlist">addActionList</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setactionkey">setActionKey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setondispatchhook">setOnDispatchHook</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">dash-store</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Supplemental dispatcher API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dispatch-api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="supplemental-dispatcher-api">
+<h1>Supplemental dispatcher API<a class="headerlink" href="#supplemental-dispatcher-api" title="Permalink to this headline">¶</a></h1>
+<p>In this section we describe the supplemental dispatcher API of
+dash-store.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For the time being, this dispatcher API is experimental and subject
+to change.</p>
+</div>
+<div class="section" id="dispatch">
+<span id="id1"></span><h2>dispatch<a class="headerlink" href="#dispatch" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">dispatch</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;dash-store/dispatch&#39;</span><span class="p">;</span>
+
+<span class="nx">dispatch</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;actionTag&#39;</span><span class="p">,</span> <span class="p">...</span> <span class="p">});</span>  <span class="c1">// from (1)</span>
+<span class="nx">dispatch</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="s1">&#39;actionTag&#39;</span><span class="p">,</span> <span class="nx">args</span><span class="p">...);</span>  <span class="c1">// form (2)</span>
+<span class="nx">dispatch</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;actionTag&#39;</span><span class="p">,</span> <span class="nx">args</span><span class="p">...]);</span>  <span class="c1">// form (3)</span>
+</pre></div>
+</div>
+<p>This function dispatches a specific action designated by
+<code class="docutils literal notranslate"><span class="pre">actionTag</span></code> (string symbols looks like <code class="docutils literal notranslate"><span class="pre">'reset'</span></code>).</p>
+<p>The dispatch function recognizes a several different dispatching
+conventions.</p>
+<p>In the form (1), actions to dispatch are represented a JavaScript
+Object.  The action type will be determined by a property named such
+as <code class="docutils literal notranslate"><span class="pre">type</span></code>, and the function of the action will be called by the
+following convention:</p>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="nx">dispatch</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;actionTag&#39;</span><span class="p">,</span> <span class="p">...</span> <span class="p">});</span>  <span class="c1">// form (1)</span>
+<span class="c1">// ↓</span>
+<span class="nx">fn</span><span class="p">({</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;actionTag&#39;</span><span class="p">,</span> <span class="p">...</span> <span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The default propery key for actionTags is <code class="docutils literal notranslate"><span class="pre">type</span></code>.  You can change
+this by <a class="reference internal" href="#setactionkey"><span class="std std-ref">setActionKey</span></a>.</p>
+</div>
+<p>In the form (2), actions are represented similar to the oridinal
+function call.  The action type will be determined by the second
+argument <code class="docutils literal notranslate"><span class="pre">actionTag</span></code>.  the function of the action will be called by
+the following convention:</p>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="nx">dispatch</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="s1">&#39;actionTag&#39;</span><span class="p">,</span> <span class="nx">args</span><span class="p">...);</span>  <span class="c1">// form (2)</span>
+<span class="c1">// ↓</span>
+<span class="nx">fn</span><span class="p">(</span><span class="nx">args</span><span class="p">...);</span>
+</pre></div>
+</div>
+<p>The form (3) is simliar to the form (2).  The difference to the
+form (2) is that <code class="docutils literal notranslate"><span class="pre">actionTag</span></code> and following arguments are
+surounded by <code class="docutils literal notranslate"><span class="pre">[]</span></code>:</p>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="nx">dispatch</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;actionTag&#39;</span><span class="p">,</span> <span class="nx">args</span><span class="p">...]);</span>  <span class="c1">// form (3)</span>
+<span class="c1">// ↓</span>
+<span class="nx">fn</span><span class="p">(</span><span class="nx">args</span><span class="p">...);</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">createStore</span><span class="p">({</span> <span class="nx">counter</span><span class="o">:</span> <span class="mi">0</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">update</span> <span class="o">=</span> <span class="nx">update</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">store</span><span class="p">);</span>
+<span class="nx">addActions</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">set</span><span class="o">:</span> <span class="p">({</span> <span class="nx">value</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">})</span> <span class="p">=&gt;</span> <span class="nx">update</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="p">{</span> <span class="p">...</span><span class="nx">state</span><span class="p">,</span> <span class="nx">counter</span><span class="o">:</span> <span class="nx">value</span> <span class="p">},</span>
+  <span class="nx">increment</span><span class="o">:</span> <span class="nx">i</span> <span class="p">=&gt;</span> <span class="nx">update</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="p">{</span> <span class="p">...</span><span class="nx">state</span><span class="p">,</span> <span class="nx">counter</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">counter</span> <span class="o">+</span> <span class="nx">i</span> <span class="p">}),</span>
+  <span class="nx">decrement</span><span class="o">:</span> <span class="nx">i</span> <span class="p">=&gt;</span> <span class="nx">update</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="p">{</span> <span class="p">...</span><span class="nx">state</span><span class="p">,</span> <span class="nx">counter</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">counter</span> <span class="o">-</span> <span class="nx">i</span> <span class="p">}),</span>
+<span class="p">});</span>
+<span class="p">...</span>
+<span class="nx">dispatch</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;set&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="mi">0</span> <span class="p">});</span>  <span class="c1">// form (1)</span>
+<span class="nx">dispatch</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="s1">&#39;inc&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>  <span class="c1">// form (2)</span>
+<span class="nx">dispatch</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">]);</span>  <span class="c1">// form (3)</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>You can create a specialized version of dispatch for your store by
+bind() method:</p>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">createStore</span><span class="p">({</span> <span class="nx">cnt</span><span class="o">:</span> <span class="mi">0</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">update</span> <span class="o">=</span> <span class="nx">update</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">store</span><span class="p">);</span>
+<span class="nx">addActions</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="p">{</span> <span class="nx">inc</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">update</span><span class="p">(</span><span class="nx">s</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="p">...</span><span class="nx">s</span><span class="p">,</span> <span class="nx">cnt</span><span class="o">:</span> <span class="nx">s</span><span class="p">.</span><span class="nx">cnt</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">...</span> <span class="p">});</span>
+<span class="nx">dispatch2</span> <span class="o">=</span> <span class="nx">dispatch</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">store</span><span class="p">);</span>  <span class="c1">// ← create a new dispatch function</span>
+<span class="p">...</span>
+<span class="nx">dispatch2</span><span class="p">(</span><span class="s1">&#39;inc&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="addactions">
+<h2>addActions<a class="headerlink" href="#addactions" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">addActions</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;dash-store/dispatch&#39;</span><span class="p">;</span>
+
+<span class="nx">addActions</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">addition</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This function adds actions to the store.  The actions to add are
+represented as a JavaScript Object in the following form:</p>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nx">actionTag1</span><span class="o">:</span> <span class="nx">function1</span><span class="p">,</span>
+  <span class="nx">actionTag2</span><span class="o">:</span> <span class="nx">function2</span><span class="p">,</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">createStore</span><span class="p">({</span> <span class="nx">counter</span><span class="o">:</span> <span class="mi">0</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">update</span> <span class="o">=</span> <span class="nx">update</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">store</span><span class="p">);</span>
+<span class="nx">addActions</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">reset</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">update</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="p">{</span> <span class="p">...</span><span class="nx">state</span><span class="p">,</span> <span class="nx">counter</span><span class="o">:</span> <span class="mi">0</span> <span class="p">},</span>
+  <span class="nx">increment</span><span class="o">:</span> <span class="nx">i</span> <span class="p">=&gt;</span> <span class="nx">update</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="p">{</span> <span class="p">...</span><span class="nx">state</span><span class="p">,</span> <span class="nx">counter</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">counter</span> <span class="o">+</span> <span class="nx">i</span> <span class="p">}),</span>
+  <span class="nx">decrement</span><span class="o">:</span> <span class="nx">i</span> <span class="p">=&gt;</span> <span class="nx">update</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="p">{</span> <span class="p">...</span><span class="nx">state</span><span class="p">,</span> <span class="nx">counter</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">counter</span> <span class="o">-</span> <span class="nx">i</span> <span class="p">}),</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="addactionlist">
+<h2>addActionList<a class="headerlink" href="#addactionlist" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">addActionList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;dash-store/dispatch&#39;</span><span class="p">;</span>
+
+<span class="nx">addActionList</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">addition</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This function adds actions to the store.  The actions to add are
+represented as an array of arrays in the following form:</p>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+  <span class="p">[</span><span class="s1">&#39;actionTag1&#39;</span><span class="p">,</span> <span class="nx">function1</span><span class="p">],</span>
+  <span class="p">[</span><span class="s1">&#39;actionTag2&#39;</span><span class="p">,</span> <span class="nx">function2</span><span class="p">],</span>
+  <span class="p">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="kr">export</span> <span class="kr">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">createStore</span><span class="p">({</span> <span class="nx">counter</span><span class="o">:</span> <span class="mi">0</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">update</span> <span class="o">=</span> <span class="nx">update</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">store</span><span class="p">);</span>
+<span class="nx">addActionList</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="p">[</span>
+  <span class="p">[</span><span class="s1">&#39;reset&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">update</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="p">{</span> <span class="p">...</span><span class="nx">state</span><span class="p">,</span> <span class="nx">counter</span><span class="o">:</span> <span class="mi">0</span> <span class="p">}],</span>
+  <span class="p">[</span><span class="s1">&#39;increment&#39;</span><span class="p">,</span> <span class="nx">i</span> <span class="p">=&gt;</span> <span class="nx">update</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="p">{</span> <span class="p">...</span><span class="nx">state</span><span class="p">,</span> <span class="nx">counter</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">counter</span> <span class="o">+</span> <span class="nx">i</span> <span class="p">})],</span>
+  <span class="p">[</span><span class="s1">&#39;decrement&#39;</span><span class="p">,</span> <span class="nx">i</span> <span class="p">=&gt;</span> <span class="nx">update</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="p">{</span> <span class="p">...</span><span class="nx">state</span><span class="p">,</span> <span class="nx">counter</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">counter</span> <span class="o">-</span> <span class="nx">i</span> <span class="p">})],</span>
+<span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setactionkey">
+<span id="id2"></span><h2>setActionKey<a class="headerlink" href="#setactionkey" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">setActionKey</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;dash-store/dispatch&#39;</span><span class="p">;</span>
+
+<span class="nx">setActionKey</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">key</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This function change the property key to determine actionTag from
+a JavaScript Object supplied to <a class="reference internal" href="#dispatch"><span class="std std-ref">dispatch</span></a> function.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The default action key is <code class="docutils literal notranslate"><span class="pre">'type'</span></code>.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">createStore</span><span class="p">({</span> <span class="p">...</span> <span class="p">});</span>
+<span class="nx">setActionKey</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">);</span>  <span class="c1">// → { tag: &#39;action&#39;, ... }</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setondispatchhook">
+<h2>setOnDispatchHook<a class="headerlink" href="#setondispatchhook" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">setOnDispatchHook</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;dash-store/dispatch&#39;</span><span class="p">;</span>
+
+<span class="nx">setOnDispatchHook</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">fn</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This function sets a onDispach hook which will be called befor every
+action of the store performed <a class="reference internal" href="#dispatch"><span class="std std-ref">dispatch</span></a>.</p>
+<p>The hook functiion <code class="docutils literal notranslate"><span class="pre">fn</span></code> should have the following signatre:</p>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="nx">fn</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Where the <code class="docutils literal notranslate"><span class="pre">args</span></code> is an array which holds the entire argument list
+passed to dispatch except the first one (store).</p>
+<p>Example:</p>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">createStore</span><span class="p">(...);</span>
+<span class="nx">setOnDispatchHook</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">fn</span><span class="p">);</span>
+<span class="p">...</span>
+<span class="nx">dispatch</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">arg1</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">,</span> <span class="nx">arg3</span><span class="p">,</span> <span class="p">...);</span>
+<span class="c1">// ↓</span>
+<span class="c1">// fn(store, [arg1, arg2, arg3, ...]);</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="core-js-api.html" class="btn btn-neutral float-left" title="Core JavaScript API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Masakazu Yoshida
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
